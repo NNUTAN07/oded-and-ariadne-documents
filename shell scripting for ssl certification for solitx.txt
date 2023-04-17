@@ -1,0 +1,18 @@
+#!/bin/bash
+sudo unzip solitx-2.zip
+sudo chmod 777 solitx-2
+##rename
+sudo mv /home/ubuntu/solitx-2/solitx.io.crt.pem /home/ubuntu/solitx-2/tps.crt
+sudo mv /home/ubuntu/solitx-2/solitx.io.key.pem /home/ubuntu/solitx-2/tps.key
+##replace
+sed -i '/oldline/c\newline' filename or filepath
+sed -i '/oldline/c\newline' filename or filepath
+##restart
+sudo service apache2 restart
+## generate .p12 file from certificate
+1)openssl pkcs12 -export -in tps.crt -inkey tps.key  -name *.solitx.io -out tps.p12
+2) openssl pkcs12 -in tps.p12 -clcerts -nokeys -out test_tps.crt
+3)sudo  keytool -importcert -keystore /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/cacerts -storepass changeit -file test_tps.crt -alias alias
+##restart
+sudo service apache2 restart
+

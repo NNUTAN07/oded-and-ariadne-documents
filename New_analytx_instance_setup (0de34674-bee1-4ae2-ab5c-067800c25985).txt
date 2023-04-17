@@ -1,0 +1,67 @@
+New Analytx Instance Setup :
+==========================
+Firefox :
+sudo apt install software-properties-common
+sudo apt-get upgrade
+sudo add-apt-repository ppa:ubuntu-mozilla-security/ppa
+sudo apt update && sudo apt install firefox
+
+java :
+sudo apt-get install openjdk-8*
+
+maven :
+sudo apt-get install maven maven*
+
+tomact8 :
+  sudo apt install tomcat8 tomcat8-admin
+  ->after install go to /etc/tomcat8/tomcat-users.xml  and add below cofiguration
+    
+   <role rolename="manager-gui"/>
+   <role rolename="admin-gui"/>
+   <user username="tomcat" password="ariadneindia" roles="manager-gui,admin-gui"/>
+
+
+  ->Then open tomcat console in browser using above credentials.
+
+
+MySql uninstall and installation :
+---------------------------------
+sudo apt-get purge mysql-server mysql-client mysql-common mysql-server-core-* mysql-client-core-*
+sudo rm -rf /etc/mysql /var/lib/mysql
+sudo apt-get autoremove
+sudo apt-get autoclean
+
+
+wget https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb.
+sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
+sudo apt update
+sudo apt install mysql-server mysql-client
+
+sudo mysql -u root -p
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+create database AriadneDB;
+sudo mysql -u root -p;
+use AriadneDB;
+source /home/aswindia-26/dumps/Analytx/DB/AriadneDB-12.12.2021.sql
+mysql -u root -p AriadneDB > /root/Desktop/AriadneDB-06.05.2020.sql 
+
+
+sudo apt-get remove mysql-workbench
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install mysql-workbench
+
+to install mysql8 version:
+673  wget https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
+  674  sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
+  675  sudo apt install mysql-server mysql-client
+  676  sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
+  677  sudo apt-key list
+  678  sudo apt-key export 91E7EE5E | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/team-xbmc.gpg
+  679  sudo apt-key export BE1229CF | sudo gpg --dearmour -o /usr/share/keyrings/microsoft.gpg
+  680  sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
+  681  sudo apt-get update
+  682  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 467B942D3A79BD29
+  683  sudo apt-get update
+  684  sudo apt install mysql-server mysql-client
+

@@ -1,0 +1,40 @@
+sudo unzip mobilefirstfinance.zip
+sudo chmod 777 mobilefirstfinance
+##rename
+sudo mv /home/ubuntu/mobilefirstfinance/mobilefirstfinance.com.crt.pem /home/ubuntu/mobilefirstfinance/mff.crt
+sudo mv /home/ubuntu/mobilefirstfinance/mobilefirstfinance.com.key.pem /home/ubuntu/mobilefirstfinance/mff.key
+sudo mv /home/ubuntu/mobilefirstfinance/mobilefirstfinance.com.ca.crt.pem /home/ubuntu/mobilefirstfinance/mff-ca.crt
+##replace
+sed -i '/oldline/c\newline' filename or filepath
+sed -i '/oldline/c\newline' filename or filepath
+sed -i '/oldline/c\newline' filename or filepath
+##restart
+sudo service apache2 restart
+## generate .p12 file from certificate
+1)openssl pkcs12 -export -in mff.crt -inkey mff.key  -name *.mobilefirstfinance.com -out mff.p12
+2)openssl pkcs12 -in mff.p12 -clcerts -nokeys -out test_mff.crt
+3)sudo  keytool -importcert -keystore /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/cacerts -storepass changeit -file test_mff.crt -alias alias
+##restart
+sudo service apache2 restart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,48 @@
+New Analytx Instance Setup :
+==========================
+Firefox :
+sudo apt install software-properties-common
+sudo apt-get upgrade
+sudo add-apt-repository ppa:ubuntu-mozilla-security/ppa
+sudo apt update && sudo apt install firefox
+
+java :
+sudo apt-get install openjdk-8*
+
+maven :
+sudo apt-get install maven maven*
+
+tomact8 :
+  sudo apt install tomcat8 tomcat8-admin
+  ->after install go to /etc/tomcat8/tomcat-users.xml  and add below cofiguration
+    
+   <role rolename="manager-gui"/>
+   <role rolename="admin-gui"/>
+   <user username="tomcat" password="ariadneindia" roles="manager-gui,admin-gui"/>
+
+
+  ->Then open tomcat console in browser using above credentials.
+
+
+MySql uninstall and installation :
+---------------------------------
+sudo apt-get purge mysql-server mysql-client mysql-common mysql-server-core-* mysql-client-core-*
+sudo rm -rf /etc/mysql /var/lib/mysql
+sudo apt-get autoremove
+sudo apt-get autoclean
+
+
+wget https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb.
+sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
+sudo apt update
+sudo apt install mysql-server mysql-client
+
+sudo mysql -u root -p
+mysql -u root -p AriadneDB > /root/Desktop/AriadneDB-06.05.2020.sql 
+
+
+sudo apt-get remove mysql-workbench
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install mysql-workbench
+

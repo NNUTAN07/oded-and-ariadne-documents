@@ -1,0 +1,53 @@
+#!/bin/bash
+sudo apt-get update
+
+##New Instance Setup :
+==================
+## Install Firefox :
+sudo apt install software-properties-common
+sudo apt-get upgrade
+sudo add-apt-repository ppa:ubuntu-mozilla-security/ppa
+sudo apt update && sudo apt install firefox
+
+## Install java :
+sudo apt-get install openjdk-8*
+
+##Install maven :
+sudo apt-get install maven maven*
+
+##Install apache2 :
+sudo apt-get install apache2
+
+##Install tomact8 :
+sudo apt-get install tomcat8
+
+##Install postgres10 :
+sudo apt-get install wget ca-certificates
+sudo add-apt-repository 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc |   sudo apt-key add -
+sudo apt-get update
+sudo apt-get install postgresql-10
+sudo su -postgres
+\password postgres
+
+
+## Install pgadmin4 :
+##to remove old pgadmin4 
+sudo apt autoremove pgadmin4
+
+curl https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo apt-key add
+sudo sh -c 'echo "deb https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" > /etc/apt/sources.list.d/pgadmin4.list && apt update'
+sudo apt install pgadmin4
+xdg-settings set default-web-browser firefox.desktop
+
+
+
+
+## Dropbox Installation Commands : 
+=============================
+sudo apt-get install caja-dropbox
+caja-dropbox autostart y
+
+cd ~ 
+wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
+~/.dropbox-dist/dropboxd

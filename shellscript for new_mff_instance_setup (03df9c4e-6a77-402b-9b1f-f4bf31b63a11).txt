@@ -1,0 +1,57 @@
+#!/bin/bash
+sudo apt-get update
+
+##New Instance Setup :
+==================
+## Install Firefox :
+sudo apt -y install software-properties-common
+sudo apt-get -y upgrade
+sudo add-apt-repository ppa:ubuntu-mozilla-security/ppa
+sudo apt -y update && sudo apt -y install firefox
+
+## Install java :
+sudo apt-get -y install openjdk-8*
+
+##Install maven :
+sudo apt-get -y install maven maven*
+
+##Install apache2 :
+sudo apt-get -y install apache2
+
+##Install tomact8 :
+sudo apt-get -y install tomcat8
+
+##Install postgres10 :
+sudo apt-get -y install wget ca-certificates
+sudo add-apt-repository 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc |   sudo apt-key add -
+sudo apt-get -y update
+sudo apt-get -y install postgresql-10
+
+
+## Install pgadmin4 :
+##to remove old pgadmin4 
+sudo apt -y autoremove pgadmin4
+
+curl https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo apt-key add
+sudo sh -c 'echo "deb https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" > /etc/apt/sources.list.d/pgadmin4.list && apt update'
+sudo apt -y install pgadmin4
+xdg-settings set default-web-browser firefox.desktop
+
+## to run script for creating database in postgres
+source db.sh
+
+## to install xrdp on ubuntu16.04:
+sudo apt-get -y install xrdp
+sudo apt-get update
+sudo apt-get -y install mate-core mate-desktop-environment mate-notification-daemon
+sudo sed -i.bak '/fi/a #xrdp multiple users configuration \n mate-session \n' /etc/xrdp/startwm.sh
+
+## to run multiple jars at once
+java -jar UserDetailsService-0.0.2-SNAPSHOT.jar &
+java -jar ProfileServices-0.0.2-SNAPSHOT.jar  &
+java -jar Zull-Server-0.0.2-SNAPSHOT.jar &
+
+
+
+

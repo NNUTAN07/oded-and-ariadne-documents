@@ -1,0 +1,21 @@
+Certficate Convertion :
+=====================
+openssl pkey -in analytx.io.key.pem -out analtx.io.key
+openssl crl2pkcs7 -nocrl -certfile analytx.io.crt.pem | openssl pkcs7 -print_certs -out analytx.io.crt
+
+Create JKS file :
+=================
+openssl pkcs12 -export -in analytx.io.crt -inkey analytx.io.key -certfile analytx.io.crt -name "analytx.io" -out analytx.io.p12
+keytool -importkeystore -srckeystore analytx.io.p12 -srcstoretype pkcs12 -destkeystore analytx.jks -deststoretype JKS
+
+
+-> after generate .jks file, place .jks in usr/share/tomcat8/analytx.jks
+   then change configuration as below in /var/lib/tomcat8/conf/server.xml of tomcat
+
+ <Connector protocol="org.apache.coyote.http11.Http11NioProtocol"
+               port="443" maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
+               clientAuth="false" sslProtocol="TLS"
+      keystoreFile="/usr/share/tomcat8/analytx.jks"
+      keystorePass="aswindia"
+ useIPVHosts="true"
+      />
