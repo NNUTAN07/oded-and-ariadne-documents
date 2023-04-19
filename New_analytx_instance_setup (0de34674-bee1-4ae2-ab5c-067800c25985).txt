@@ -16,9 +16,12 @@ tomact8 :
   sudo apt install tomcat8 tomcat8-admin
   ->after install go to /etc/tomcat8/tomcat-users.xml  and add below cofiguration
     
-   <role rolename="manager-gui"/>
-   <role rolename="admin-gui"/>
-   <user username="tomcat" password="ariadneindia" roles="manager-gui,admin-gui"/>
+<role rolename="manager-gui"/>
+<role rolename="manager"/>
+<role rolename="manager-script"/>
+<role rolename="manager-status"/>
+<role rolename="admin-gui"/>
+<user username="tomcat" password="aswindia" roles="manager-gui,admin-gui,manager,manager-script,manager-status"/>
 
 
   ->Then open tomcat console in browser using above credentials.
