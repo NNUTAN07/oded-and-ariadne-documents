@@ -1,0 +1,55 @@
+1.Get the Certificates from provider as .Zip(Mff and Solitx) format 
+
+2.Extracts the files
+
+3.Rename
+  mobilefirstfinance.crt.pem  to mff.crt
+  mobilefirstfinance.key.pem  to mff.key
+  mobilefirstfinance.ca.crt.pem  to mff-ca.crt
+
+  solitx.io.crt.pem  to tps.crt
+  solitx.io.key.pem  to tps.key
+
+4.Place these certificates in production server
+
+5.Replace old certificates configuration with new certififcates in apache2
+  -> open   /etc/apache2/sites-available/default-ssl.conf
+  ->Change below configuration
+    SSLCertificateKeyFile /root/Downloads/New_Certificates/mobilefirstfinance/mff.key
+    SSLCertificateFile /root/Downloads/New_Certificates/mobilefirstfinance/mff.crt
+    SSLCertificateChainFile /root/Downloads/New_Certificates/mobilefirstfinance/mff-ca.crt
+  ->Restart apache2
+    sudo service apache2 restart
+
+6.Generate .p12 file from certificate files using below commands 
+
+  openssl pkcs12 -export -in mff.crt -inkey mff.key  -name *.mobilefirstfinance.com -out mff.p12
+  openssl pkcs12 -in mff.p12 -clcerts -nokeys -out test_mff.crt
+  sudo  keytool -importcert -keystore /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/cacerts -storepass changeit -file test_mff.crt -alias alias
+  sudo service apache2 restart
+
+  openssl pkcs12 -export -in tps.crt -inkey tps.key  -name *.solitx.io -out tps.p12
+  openssl pkcs12 -in tps.p12 -clcerts -nokeys -out test_tps.crt
+  sudo  keytool -importcert -keystore /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/cacerts -storepass changeit -file test_tps.crt -alias alias
+
+-> for java 9+
+sudo  keytool -importcert -keystore -cacerts -storepass changeit -file test_tps.crt -alias sandbox.solitx.io
+
+
+  sudo service apache2 restart
+note : while generating .p12 it will ask password , remember that password we have to same in application.yml or application.properties in zull jar
+
+7.Add new .p12 file to jars(zull jar for mff and zull,login for solitx) or code and also check password of the file
+
+
+
+
+
+
+
+
+sudo a2enmod ssl
+
+sudo a2ensite default-ssl
+  
+  
