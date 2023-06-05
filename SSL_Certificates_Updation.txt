@@ -40,6 +40,7 @@ sudo  keytool -importcert -keystore -cacerts -storepass changeit -file test_tps.
 note : while generating .p12 it will ask password , remember that password we have to same in application.yml or application.properties in zull jar
 
 7.Add new .p12 file to jars(zull jar for mff and zull,login for solitx) or code and also check password of the file
+8.sudo reboot now
 
 
 
