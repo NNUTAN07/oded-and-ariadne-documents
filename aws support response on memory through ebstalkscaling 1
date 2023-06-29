@@ -1,0 +1,91 @@
+Amazon Web Services
+
+
+Fri Apr 01 2022
+18:06:43 GMT+0530 (India Standard Time)
+Was this response helpful? Click here to rate:
+
+
+Translate
+
+Hello,
+
+Greetings for the day!!
+
+Thank you for contacting AWS Premium Support. I am Hemanth from Elasticbeanstalk service team and I will be assisting you with this case today.
+
+From your correspondence, I understand that you want to know the process to use memory utilization metrics for the ec2 autoscaling group in your Elasticbeanstalk environment. Please correct me if I have misunderstood anything here.
+
+In order to check on this, I verified the autoscaling triggers [1] for the elasticbeanstalk environment. Unfortunately, memory utilisation metrics are currently unavailable in the configuration settings of the EB environment. However, there is a workaround, you can set up a CloudWatch alarm to trigger the auto scaling scale up and down event, but you will actually need to create memory related metrics to do this, as they don't exist by default. I have created sample environment based on the "Tomcat 8.5 with Corretto 11 running on 64bit Amazon Linux 2/4.2.13" platform and was able to scale the ec2 instance based on their memory utilisation. Please find below the detailed steps on how to deploy it successfully.
+
+1) You have to give your Beanstalk IAM role permissions to write to CloudWatch [2]:
+Choose your environment's instance profile role. By default, when you create an environment with the Elastic Beanstalk console or EB CLI, this is "aws-elasticbeanstalk-ec2-role" ----> Choose the Permissions tab ---> Under Permissions Policies, in the Permissions section, choose Attach policies --> Under Attach Permissions, choose the AWS managed policy "CloudWatchAgentServerPolicy" --> click Attach policy
+
+2) Create two ".config" files inside your .ebextensions folder within your deployment package one of which writes to CloudWatch and other creates CloudWatch Alarms.
+(Note: Please find attached to this correspondence, the configuration files for your References. Please note that the CloudWatch alarm file creates two alarms for Memory usage above 60% and memory availability below 5%. Please modify it according to your use-case)
+Here is the directory structure of my sample application for your reference:
+
+├── .ebextensions
+│   ├── alarm2.config
+│   └── metric.config
+├── .gitignore
+├── META-INF
+├── WEB-INF
+└── index.jsp
+
+3) Deploy it in your environment and you should be able to verify the Memory metrics inside your CloudWatch metrics under the folder "CWAgent" and similarly the CloudWatch alarms under the Alarms section of the CloudWatch.
+
+Please note that we cannot disable the Elasticbeanstalk default scaling policy and this memory based scaling will work along with it.
+
+I hope the above information is helpful, please test it and in case if you have any queries or concerns, please feel free to get back and I will be glad to assist you further.
+
+Wishing you a great day ahead:)
+
+References:
+[1] Auto Scaling triggers
+https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-autoscaling-triggers.html 
+
+[2] Permissions
+https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-cw.html#customize-containers-cw-policy 
+
+To see the file named 'alarm2.config,metric.config' included with this correspondence, please use the case link given below the signature.
+
+We value your feedback. Please share your experience by rating this correspondence using the AWS Support Center link at the end of this correspondence. Each correspondence can also be rated by selecting the stars in top right corner of each correspondence within the AWS Support Center.
+
+Best regards,
+Hemanth Sai Surya Ku T.
+Amazon Web Services
+
+===============================================================
+
+To share your experience or contact us again about this case, please return to the AWS Support Center using the following URL: https://console.aws.amazon.com/support/home#/case/?displayId=9812753361&language=en 
+
+Note, this e-mail was sent from an address that cannot accept incoming e-mails.
+To respond to this case, please follow the link above to respond from your AWS Support Center.
+
+===============================================================
+
+Don’t miss messages from AWS Support when you need help! Update your contact information:
+https://console.aws.amazon.com/billing/home#/account 
+
+If you receive an error message when visiting the contact information page, visit:
+https://aws.amazon.com/premiumsupport/knowledge-center/iam-billing-access/ 
+
+AWS Support:
+https://aws.amazon.com/premiumsupport/knowledge-center/ 
+
+AWS Documentation:
+https://docs.aws.amazon.com/ 
+
+AWS Cost Management:
+https://aws.amazon.com/aws-cost-management/ 
+
+AWS Training:
+http://aws.amazon.com/training/ 
+
+AWS Managed Services:
+https://aws.amazon.com/managed-services/ 
+
+Attachments
+alarm2.config
+metric.config
