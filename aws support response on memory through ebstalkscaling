@@ -1,0 +1,82 @@
+Amazon Web Services
+
+
+Tue Apr 05 2022
+18:08:24 GMT+0530 (India Standard Time)
+Was this response helpful? Click here to rate:
+
+
+Translate
+
+Hello,
+
+Greetings for the day!!
+
+Thank you for the response. I have verified your environment "Test-env" to troubleshoot the scenario. I see that the IAM role was modified correctly as required, however, on checking the environment using our internal tools, I found that the configuration files that I have specified in the step-2 of my previous correspondence were missing. I assume that these configuration files are either not created or placed in some other location instead of putting them inside the ".ebextensions" folder. At this point of time I suspect this could be the reason why the CloudWatch metrics and alarms were not created. Please do make sure that the below step (step-2 of my previous correspondence) was followed correctly and the configuration files (alarm2.config, metric.config) were placed inside the .ebextensions folder of your application. Also, make sure that you have uploaded and deployed this modified version of the application to your environment.
+
+--------------
+Create two ".config" files inside your .ebextensions folder within your deployment package one of which writes to CloudWatch and other creates CloudWatch Alarms.
+(Note: Please find attached to this correspondence, the configuration files for your References. Please note that the CloudWatch alarm file creates two alarms for Memory usage above 60% and memory availability below 5%. Please modify it according to your use-case)
+Here is the directory structure of my sample application for your reference:
+
+├── .ebextensions
+│   ├── alarm2.config
+│   └── metric.config
+├── .gitignore
+├── META-INF
+├── WEB-INF
+└── index.jsp
+----------------
+
+Deploy it in your environment and you should be able to verify the Memory metrics inside your CloudWatch metrics under the folder "CWAgent" and similarly the CloudWatch alarms under the Alarms section of the CloudWatch. I have attached the same configuration files (alarm2.config, metric.config) to this correspondence again for your reference. Also, I have attached the sample application bundle (metric-test.zip) that I have created to test the memory metrics. Please check the folder structure by unzipping it. You can also deploy it to your environment for testing purpose (it contains sample tomcat app with the .ebextensions). Please do verify your environment and follow the above process in case you find something missing.
+
+I hope the above information is helpful, please test it and in case the issue persists, please share the full bundle logs of your environment for further troubleshooting [1]. In case you have any queries or concerns, please feel free to get back and I will be glad to assist you further.
+
+Wishing you a great day ahead:)
+
+References:
+[1] Viewing logs from Amazon EC2 instances in your Elastic Beanstalk environment
+https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.logging.html 
+
+To see the file named 'alarm2.config,metric.config,metric-test.zip' included with this correspondence, please use the case link given below the signature.
+
+We value your feedback. Please share your experience by rating this correspondence using the AWS Support Center link at the end of this correspondence. Each correspondence can also be rated by selecting the stars in top right corner of each correspondence within the AWS Support Center.
+
+Best regards,
+Hemanth Sai Surya Ku T.
+Amazon Web Services
+
+===============================================================
+
+To share your experience or contact us again about this case, please return to the AWS Support Center using the following URL: https://console.aws.amazon.com/support/home#/case/?displayId=9812753361&language=en 
+
+Note, this e-mail was sent from an address that cannot accept incoming e-mails.
+To respond to this case, please follow the link above to respond from your AWS Support Center.
+
+===============================================================
+
+Don’t miss messages from AWS Support when you need help! Update your contact information:
+https://console.aws.amazon.com/billing/home#/account 
+
+If you receive an error message when visiting the contact information page, visit:
+https://aws.amazon.com/premiumsupport/knowledge-center/iam-billing-access/ 
+
+AWS Support:
+https://aws.amazon.com/premiumsupport/knowledge-center/ 
+
+AWS Documentation:
+https://docs.aws.amazon.com/ 
+
+AWS Cost Management:
+https://aws.amazon.com/aws-cost-management/ 
+
+AWS Training:
+http://aws.amazon.com/training/ 
+
+AWS Managed Services:
+https://aws.amazon.com/managed-services/ 
+
+Attachments
+alarm2.config
+metric.config
+metric-test.zip
