@@ -1,0 +1,23 @@
+# Base image with OS
+   FROM ubuntu:18.04
+
+# Set environment variables
+   ENV POSTGRES_USER=postgres
+   ENV POSTGRES_PASSWORD=oded@12
+   ENV POSTGRES_DB=MFFTest
+   ENV POSTGRES_DB=audit
+   
+# Install PostgreSQL and java-8
+   RUN apt-get update 
+   RUN apt-get -y install openjdk-8-jdk
+   RUN apt install -y postgresql postgresql-contrib
+
+# Copy the JAR file to the container
+   COPY target/BranchService-0.0.1-SNAPSHOT.jar /home/BranchService-0.0.1-SNAPSHOT.jar
+
+# exposing port no to a container
+   EXPOSE 4003
+
+# Start PostgreSQL service and run the JAR file
+   CMD service postgresql start
+   CMD java -jar /home/BranchService-0.0.1-SNAPSHOT.jar
