@@ -1,0 +1,16 @@
+# BASE IMAGE
+FROM ubuntu
+
+# INSTALL JAVA
+RUN apt-get update && apt-get -y install openjdk-8-jdk && apt-get -y install unzip
+
+#COPY KAFKA
+ADD kafka.zip /home
+RUN unzip /home/kafka.zip -d /home/
+RUN chmod +x /home/kafka/bin/*
+
+#EXPOSE PORT
+EXPOSE 2181
+
+#RUN ZOOKEEPER
+CMD /home/kafka/bin/zookeeper-server-start.sh /home/kafka/config/zookeeper.properties
