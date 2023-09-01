@@ -1,0 +1,52 @@
+#BASE IMAGE with os
+FROM ubuntu:18.04
+
+#to update & install apache2
+RUN apt-get update
+RUN apt-get -y install apache2 && apt-get -y install unzip
+RUN rm -f /var/www/html/index.html
+RUN rm -rf /var/www/html
+RUN mkdir /var/www/ecs.mobilefirstfinance.com
+RUN mkdir /var/www/ecs.mobilefirstfinance.com/html
+
+#copy dist
+COPY /dist/* /var/www/ecs.mobilefirstfinance.com/html
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+#enable ssl module and rewrite module
+RUN a2ensite default-ssl
+RUN a2enmod ssl
+RUN a2enmod rewrite
+
+#change document root name
+RUN sed -i -r '5d' /etc/apache2/sites-enabled/default-ssl.conf
+RUN sed -i -r '5 i DocumentRoot /var/www/ecs.mobilefirstfinance.com/html' /etc/apache2/sites-enabled/default-ssl.conf
+RUN sed -i -r '6 i ServerName ecs.mobilefirstfinance.com' /etc/apache2/sites-enabled/default-ssl.conf
+RUN sed -i -r '12d' /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i -r '12 i DocumentRoot /var/www/ecs.mobilefirstfinance.com/html' /etc/apache2/sites-enabled/000-default.conf
+
+#copy and unzip ssl certificates
+COPY ssl-certificates.zip /root/
+RUN unzip /root/ssl-certificates.zip -d /root/
+
+#add ssl-certificates path
+RUN sed -i -r '32d' /etc/apache2/sites-enabled/default-ssl.conf
+RUN sed -i -r '32d' /etc/apache2/sites-enabled/default-ssl.conf
+RUN sed -i -r '32 i SSLCertificateKeyFile /root/ssl-certificates/mff.key' /etc/apache2/sites-enabled/default-ssl.conf   
+RUN sed -i -r '33 i SSLCertificateFile /root/ssl-certificates/mff.crt' /etc/apache2/sites-enabled/default-ssl.conf
+
+#to enable https
+RUN sed -i -r '228 i <Directory /var/www/html>' /etc/apache2/apache2.conf
+RUN sed -i -r '229 i AllowOverride All' /etc/apache2/apache2.conf
+RUN sed -i -r '230 i </Directory>' /etc/apache2/apache2.conf
+
+#to redirect to https 
+RUN sed -i -r '29 i RewriteEngine On' /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i -r '30 i RewriteCond %{HTTPS} !=on' /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i -r '31 i RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]' /etc/apache2/sites-enabled/000-default.conf
+
+#expose http and https port nos
+EXPOSE 80 443
+
+#run apache2
+CMD apache2ctl -D FOREGROUND
