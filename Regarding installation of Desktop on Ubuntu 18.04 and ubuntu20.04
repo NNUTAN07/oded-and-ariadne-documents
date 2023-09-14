@@ -1,0 +1,15 @@
+ubuntu 18.04
+
+sudo apt install tasksel
+sudo tasksel install ubuntu-mate-desktop
+sudo apt install xrdp
+sudo reboot 
+
+To check the version of desktop that is installed - echo $XDG_CURRENT_DESKTOP
+
+ubuntu 20.04
+sudo apt remove xserver-xorg-core
+sudo apt install xserver-xorg-core
+sudo apt install xorgxrdp
+sudo service xrdp restart
+https://tecadmin.net/how-to-install-xrdp-on-ubuntu-20-04/ 

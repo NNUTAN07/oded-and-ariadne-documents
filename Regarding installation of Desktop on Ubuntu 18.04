@@ -1,7 +1,0 @@
-sudo apt install tasksel
-sudo tasksel install ubuntu-mate-desktop
-sudo apt install xrdp
-sudo reboot 
-
-To check the version of desktop that is installed - echo $XDG_CURRENT_DESKTOP
-
