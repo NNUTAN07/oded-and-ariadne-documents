@@ -7,8 +7,8 @@
    ENV POSTGRES_DB=MFFTest
 
 # Install PostgreSQL
-   RUN apt-get update 
-   RUN apt install -y postgresql postgresql-contrib
+   RUN apt-get update && \
+       apt install -y postgresql postgresql-contrib
 
 # Copy the JAR file to the container
    COPY target/ZullServer-0.0.2-SNAPSHOT.jar /home/ZullServer-0.0.2-SNAPSHOT.jar
@@ -17,5 +17,5 @@
    EXPOSE 5055
    
 # Start PostgreSQL service and run the JAR file
-   CMD service postgresql start
-   CMD java -jar /home/ZullServer-0.0.2-SNAPSHOT.jar
+   CMD service postgresql start && \
+       java -jar /home/ZullServer-0.0.2-SNAPSHOT.jar
