@@ -1,4 +1,47 @@
- tolerations:
+
+Dear Nutan,
+
+Greetings from Edureka!
+
+The warning message "FailedScheduling" indicates that there is a pod that could not be scheduled onto any available node in the cluster. The reason mentioned in the warning is that the available node(s) have a taint that the pod cannot tolerate. In your case, the taint is "node-role.kubernetes.io/master:NoSchedule."
+
+By default, master/control plane nodes in Kubernetes have the taint "node-role.kubernetes.io/master:NoSchedule" applied. This taint prevents regular pods from being scheduled on master/control plane nodes to avoid running user workloads on critical nodes.
+
+To resolve this issue, you have a few options:
+
+1. Deploy the pod on a worker node:
+   - You can label one or more of your worker nodes with a specific label, such as "node-role=worker", using the `kubectl label` command. This will make those nodes eligible for scheduling regular pods.
+   - For example, to label a node with the name "worker-1" as a worker node, run the following command:
+     ```
+     kubectl label node worker-1 node-role=worker
+     ```
+   - Once labeled, Kubernetes will consider the labeled worker node(s) for scheduling regular pods, and the pod that failed to schedule should be automatically rescheduled on the worker node.
+
+2. Tolerate the taint on master/control plane node(s):
+   - If you have specific reasons to run your pod on a master/control plane node, you can add a "toleration" to the pod's specification to allow it to tolerate the taint.
+   - Add the following section under the `spec` section of your pod's YAML manifest:
+     ```yaml
+     tolerations:
        - key: node-role.kubernetes.io/master
          operator: Exists
          effect: NoSchedule
+     ```
+   - With this toleration, the pod will be allowed to schedule on the master/control plane node(s) despite the taint. Remember to adjust other specifications in your pod manifest as needed.
+
+3. Modify the taint on the master/control plane node(s):
+   - If you want to allow regular pods to be scheduled on the master/control plane node(s), you can remove the taint or modify it to have a different effect.
+   - To remove the taint, you can run the following command:
+     ```
+     kubectl taint nodes <node-name> node-role.kubernetes.io/master-
+     ```
+   - Replace `<node-name>` with the name of the specific master/control plane node on which you want to remove the taint.
+
+After implementing one of these options, the pod that previously failed to schedule should be rescheduled successfully.
+
+Remember that running regular pods on master/control plane nodes may impact the stability and performance of your cluster, so it's generally recommended to reserve master/control plane nodes for cluster management components and critical system processes.
+
+Please revert to this email if you have any other queries, we will be happy to help you.
+
+Regards
+Roahn Sarkar
+Edureka!
