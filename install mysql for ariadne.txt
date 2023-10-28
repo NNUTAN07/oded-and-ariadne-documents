@@ -1,0 +1,14 @@
+wget https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
+   90  sudo wget https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
+   91  sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
+   92  sudo apt update
+   93  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6494C6D6997C215E
+   94  sudo apt update
+   95  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 467B942D3A79BD29
+   96  sudo apt update
+   97  sudo apt install mysql-server mysql-client
+   98  sudo mysql -u root -p
+   99  sudo apt-get install mysql-workbench
+
+
+ 
