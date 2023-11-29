@@ -1,0 +1,20 @@
+Docker setup
+
+Docker file for service
+DOCKER file is created for all the services and the frontend.
+Example for a Docker file for a service:
+# Base image with OS 
+   FROM ubuntu:18.04
+
+# Install java-8
+   RUN apt-get update && \
+       apt-get -y install openjdk-8-jdk
+  
+# Copy the JAR file to the container
+   COPY target/ZullServer-0.0.2-SNAPSHOT.jar /home/ZullServer-0.0.2-SNAPSHOT.jar
+
+# exposing port no to a container
+   EXPOSE 5055
+   
+# Start PostgreSQL service and run the JAR file
+  CMD java -jar /home/ZullServer-0.0.2-SNAPSHOT.jar
