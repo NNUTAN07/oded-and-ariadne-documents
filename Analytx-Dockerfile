@@ -1,0 +1,22 @@
+FROM tomcat:8.5.69-jdk8-openjdk
+COPY AriadneHome.war /usr/local/tomcat/webapps
+COPY BalanceSheet.war /usr/local/tomcat/webapps
+COPY Behaviour.war /usr/local/tomcat/webapps
+COPY BehaviourCanonical.war /usr/local/tomcat/webapps
+COPY BehaviourTree.war /usr/local/tomcat/webapps
+COPY CanonicalReports.war /usr/local/tomcat/webapps
+COPY ContractView.war /usr/local/tomcat/webapps
+COPY CounterParty.war /usr/local/tomcat/webapps
+COPY CreditRisk.war /usr/local/tomcat/webapps
+COPY DataLoader.war /usr/local/tomcat/webapps
+COPY DynamicRiskFactor.war /usr/local/tomcat/webapps
+COPY FinancialAnalysis.war /usr/local/tomcat/webapps
+COPY MetaConsistancy.war /usr/local/tomcat/webapps
+COPY PortfolioStructure.war /usr/local/tomcat/webapps
+COPY Reports.war /usr/local/tomcat/webapps
+COPY RiskFactorViewer.war /usr/local/tomcat/webapps
+COPY RiskLoader.war /usr/local/tomcat/webapps
+COPY Solve.war /usr/local/tomcat/webapps
+COPY StaticRiskFactor.war /usr/local/tomcat/webapps
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
