@@ -1,0 +1,30 @@
+ROM ubuntu:18.04
+
+RUN apt-get update && \
+    apt-get -y install openjdk-8-jdk
+
+COPY kafka.zip /home/
+
+RUN apt-get -y install unzip && \
+    unzip /home/kafka.zip -d /home/ && \
+    mkdir /home/kafka-logs && \
+    mkdir /home/zookeeper
+
+COPY ZullServer-0.0.2-SNAPSHOT.jar /home/ZullServer-0.0.2-SNAPSHOT.jar
+COPY ProfileService-0.0.1-SNAPSHOT.jar /home/ProfileService-0.0.1-SNAPSHOT.jar
+COPY LoginService-0.0.1-SNAPSHOT.jar /home/LoginService-0.0.1-SNAPSHOT.jar
+COPY UserService-0.0.2-SNAPSHOT.jar  /home/UserService-0.0.2-SNAPSHOT.jar
+COPY SolitxServices-0.0.1-SNAPSHOT.jar /home/SolitxServices-0.0.1-SNAPSHOT.jar
+COPY BranchService-0.0.1-SNAPSHOT.jar /home/BranchService-0.0.1-SNAPSHOT.jar
+COPY PortfolioService-0.0.1-SNAPSHOT.jar /home/PortfolioService-0.0.1-SNAPSHOT.jar
+COPY WorkflowService-0.0.1-SNAPSHOT.jar /home/WorkflowService-0.0.1-SNAPSHOT.jar
+COPY start.sh /home/
+
+EXPOSE 5055
+
+CMD ["bash", "/home/start.sh"]
+
+
+
+
+
