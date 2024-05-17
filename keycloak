@@ -1,1 +1,5 @@
 https://stackoverflow.com/questions/49859066/keycloak-docker-https-required
+
+
+
+ docker run -itd --name keycloak   -e KEYCLOAK_ADMIN=admin   -e KEYCLOAK_ADMIN_PASSWORD=KeyCloak@@oded   -e KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/conf/solitx.io.crt.pem   -e KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/conf/solitx.io.key.pem   -e KC_DB_URL=jdbc:postgresql://135.181.77.20:5432/keycloak  -e KC_DB_USERNAME=ariadne   -e KC_DB_PASSWORD=aswindia   -e KC_DB=postgres   -v /root/solitx.io.crt.pem:/opt/keycloak/conf/solitx.io.crt.pem   -v /root/solitx.io.key.pem:/opt/keycloak/conf/solitx.io.key.pem   -p 8443:8443   quay.io/keycloak/keycloak:23.0.4   start --hostname testkeycloak.solitx.io
