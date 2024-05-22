@@ -1,0 +1,5 @@
+https://dev.to/jeansen/set-up-jenkins-with-https-250k
+
+
+
+sudo systemctl edit jenkins
