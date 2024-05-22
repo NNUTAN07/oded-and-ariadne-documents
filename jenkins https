@@ -3,3 +3,10 @@ https://dev.to/jeansen/set-up-jenkins-with-https-250k
 
 
 sudo systemctl edit jenkins
+
+[Service]
+#Environment="JENKINS_PORT=8282"
+Environment="JENKINS_HTTPS_PORT=8282"
+Environment="JENKINS_HTTPS_KEYSTORE=/var/lib/jenkins/tps.p12"
+Environment="JENKINS_HTTPS_KEYSTORE_PASSWORD=aswsolitx"
+
