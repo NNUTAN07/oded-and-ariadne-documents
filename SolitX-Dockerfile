@@ -1,0 +1,19 @@
+# Base image with OS
+   FROM ubuntu:22.04
+   
+# Install java-17
+   RUN apt-get update && \
+       apt-get -y install openjdk-17-jdk
+  
+# Copy the JAR file to the container
+   COPY target/BusinessEventsService-0.0.1-SNAPSHOT.jar /home/BusinessEventsService-0.0.1-SNAPSHOT.jar
+   COPY solitx.io.crt /home/solitx.io.crt
+   
+# run the certificates command
+   RUN keytool -import -trustcacerts -keystore /usr/lib/jvm/java-17-openjdk-amd64/lib/security/cacerts -storepass changeit -alias keycloak -file /home/solitx.io.crt -noprompt
+  
+# exposing port no to a container
+   EXPOSE 7087
+   
+# Run the JAR file
+  CMD java -jar /home/BusinessEventsService-0.0.1-SNAPSHOT.jar
