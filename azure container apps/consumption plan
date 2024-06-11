@@ -1,2 +1,5 @@
 https://azure.microsoft.com/en-us/pricing/details/container-apps/
 https://learn.microsoft.com/en-us/azure/container-apps/billing#container-apps
+
+key points:
+You will not be billed for resource consumption when your App is stopped, since it will not be using the CPU and Memory resources during this time.
