@@ -26,6 +26,7 @@ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc |   sudo ap
 sudo apt-get update
 sudo apt-get install postgresql-10
 sudo su -postgres
+psql
 \password postgres
 
 
