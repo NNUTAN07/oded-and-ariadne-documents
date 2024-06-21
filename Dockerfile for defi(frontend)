@@ -1,0 +1,29 @@
+FROM ubuntu:18.04
+
+RUN apt-get update
+
+RUN apt-get -y install apache2 && \
+    apt-get -y install unzip
+
+RUN rm -rf /var/www/html/index.html
+
+COPY dist.zip  /root
+RUN  unzip /root/dist.zip -d /root
+RUN  cp -R /root/dist/* /var/www/html
+
+RUN chmod 777 /var/www/html/assets/img/flags/es.png && \
+    chmod 777 /var/www/html/assets/img/flags/pt.png && \
+    chmod 777 /var/www/html/assets/img/flags/de.png && \
+    chmod 777 /var/www/html/assets/img/user2.png && \
+    chmod 777 /var/www/html/assets/img/portrait/small/avatar-s-15.png && \
+    chmod 777 /var/www/html/assets/img/portrait/small/avatar-s-16.png && \
+    chmod 777 /var/www/html/assets/img/icons/sketch-mac-icon.png && \
+    chmod 777 /var/www/html/assets/img/portrait/small/* && \
+    chmod 777 /var/www/html/assets/img/icons/pdf.png && \
+    chmod 777 /var/www/html/assets/img/portrait/small/avatar-s-23.png
+
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+EXPOSE 80 443
+
+CMD ["apache2ctl", "-D", "FOREGROUND"]
