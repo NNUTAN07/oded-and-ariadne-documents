@@ -29,6 +29,20 @@ sudo su -postgres
 psql
 \password postgres
 
+Database Configuration (pg_hba.conf):
+Edit the pg_hba.conf file located in your PostgreSQL data directory (e.g., /etc/postgresql/12/main/pg_hba.conf) to ensure PostgreSQL accepts connections from all IP addresses:
+# PostgreSQL Client Authentication Configuration File
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    all             all             0.0.0.0/0               md5
+host    all             all             all                     md5
+
+PostgreSQL postgresql.conf Settings:
+Ensure that PostgreSQL is configured to listen on all IP addresses. Edit the postgresql.conf file (e.g., /etc/postgresql/12/main/postgresql.conf) and set the listen_addresses parameter
+listen_addresses = '*'
+
+Restart PostgreSQL:
+sudo systemctl restart postgresql
+
 
 pgadmin4 :
 to remove old pgadmin4 -> sudo apt autoremove pgadmin4
