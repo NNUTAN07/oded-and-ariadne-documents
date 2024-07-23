@@ -1,1 +1,39 @@
 
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.App/managedEnvironments",
+      "apiVersion": "2023-05-01",
+      "name": "demokube",
+      "location": "Switzerland North",
+      "properties": {
+         
+      }
+    },
+    {
+      "type": "Microsoft.App/containerApps",
+      "apiVersion": "2023-05-01",
+      "name": "mycontainerapp",
+      "location": "Switzerland North",
+      "dependsOn": [
+        "demokube"
+      ],
+      "properties": {
+        "managedEnvironmentId": "[resourceId('Microsoft.App/managedEnvironments', 'demokube')]",
+        "configuration": {
+           
+        },
+        "template": {
+          "containers": [
+            {
+              "image": "docker.io/odedtech/defi:21",
+              "name": "deficontainer"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
