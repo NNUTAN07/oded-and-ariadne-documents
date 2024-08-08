@@ -6,3 +6,7 @@ docker run -itd --name keycloak   -e KEYCLOAK_ADMIN=admin   -e KEYCLOAK_ADMIN_PA
 
 For http:
 sudo docker run -itd --name keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=KeyCloak@@oded -e KC_DB_URL=jdbc:postgresql://10.20.30.22:5432/keycloak -e KC_DB_USERNAME=postgres -e KC_DB_PASSWORD=oded@12 -e KC_DB=postgres -p 8080:8080 quay.io/keycloak/keycloak:25.0.1 start-dev
+
+
+sudo docker exec -it --user root keycloak /bin/bash
+RUN keytool -import -trustcacerts -keystore /etc/pki/ca-trust/extracted/java/cacerts -storepass changeit -alias keycloak -file /home/mobilefirstfinance.com.crt.pem
