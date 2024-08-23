@@ -10,3 +10,5 @@ sudo docker run -itd --name keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_P
 
 sudo docker exec -it --user root keycloak /bin/bash
 RUN keytool -import -trustcacerts -keystore /etc/pki/ca-trust/extracted/java/cacerts -storepass changeit -alias keycloak -file /home/mobilefirstfinance.com.crt.pem
+or
+sudo keytool -import -trustcacerts -keystore /usr/lib/jvm/java-21-openjdk-21.0.4.0.7-1.el9.x86_64/lib/security/cacerts -storepass changeit -alias keycloak1 -file /home/mobilefirstfinance.com.crt.pem
