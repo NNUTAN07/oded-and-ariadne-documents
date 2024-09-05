@@ -1,0 +1,113 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "resources": [
+        {
+            "type": "Microsoft.Automation/automationAccounts",
+            "apiVersion": "2020-01-13-preview",
+            "name": "myAutomationAccount",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sku": {
+                    "name": "Free"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/runbooks",
+            "apiVersion": "2020-01-13-preview",
+            "name": "[concat('myAutomationAccount/', 'StartContainerApp')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "runbookType": "PowerShell",
+                "logVerbose": false,
+                "logProgress": false,
+                "description": "Runbook to start the container app",
+                "draft": {
+                    "inEdit": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/runbooks",
+            "apiVersion": "2020-01-13-preview",
+            "name": "[concat('myAutomationAccount/', 'StopContainerApp')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "runbookType": "PowerShell",
+                "logVerbose": false,
+                "logProgress": false,
+                "description": "Runbook to stop the container app",
+                "draft": {
+                    "inEdit": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/schedules",
+            "apiVersion": "2015-10-31",
+            "name": "[concat('myAutomationAccount/', 'StartContainerAppSchedule')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "startTime": "2024-08-30T12:30:00Z",
+                "expiryTime": "2025-08-12T08:00:00Z",
+                "interval": "1",
+                "frequency": "Day"
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/schedules",
+            "apiVersion": "2015-10-31",
+            "name": "[concat('myAutomationAccount/', 'StopContainerAppSchedule')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "startTime": "2024-08-31T12:30:00Z",
+                "expiryTime": "2025-08-12T18:00:00Z",
+                "interval": "1",
+                "frequency": "Day"
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/jobSchedules",
+            "apiVersion": "2015-10-31",
+            "name": "[concat('myAutomationAccount/', guid(resourceGroup().id, 'StartContainerAppSchedule'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts/runbooks', 'myAutomationAccount', 'StartContainerApp')]",
+                "[resourceId('Microsoft.Automation/automationAccounts/schedules', 'myAutomationAccount', 'StartContainerAppSchedule')]"
+            ],
+            "properties": {
+                "runbook": {
+                    "name": "StartContainerApp",
+                    "automationAccount": {
+                        "name": "myAutomationAccount"
+                    }
+                },
+                "schedule": {
+                    "name": "StartContainerAppSchedule"
+                },
+                "parameters": {}
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/jobSchedules",
+            "apiVersion": "2015-10-31",
+            "name": "[concat('myAutomationAccount/', guid(resourceGroup().id, 'StopContainerAppSchedule'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts/runbooks', 'myAutomationAccount', 'StopContainerApp')]",
+                "[resourceId('Microsoft.Automation/automationAccounts/schedules', 'myAutomationAccount', 'StopContainerAppSchedule')]"
+            ],
+            "properties": {
+                "runbook": {
+                    "name": "StopContainerApp",
+                    "automationAccount": {
+                        "name": "myAutomationAccount"
+                    }
+                },
+                "schedule": {
+                    "name": "StopContainerAppSchedule"
+                },
+                "parameters": {}
+            }
+        }
+    ]
+}
