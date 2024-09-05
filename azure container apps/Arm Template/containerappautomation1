@@ -1,0 +1,105 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "resources": [
+        {
+            "type": "Microsoft.App/managedEnvironments",
+            "apiVersion": "2023-05-01",
+            "name": "myenvironment",
+            "location": "Switzerland North",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.App/containerApps",
+            "apiVersion": "2024-03-01",
+            "name": "mycontainerapp",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "managedEnvironmentId": "[resourceId('Microsoft.App/managedEnvironments', 'myenvironment')]",
+                "configuration": {
+                    "ingress": {
+                        "external": true,
+                        "targetPort": 80
+                    }
+                },
+                "template": {
+                    "containers": [
+                        {
+                            "name": "mycontainer",
+                            "image": "odedtech/defi:27",
+                            "resources": {
+                                "cpu": 0.5,
+                                "memory": "1.0Gi"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts",
+            "apiVersion": "2020-01-13-preview",
+            "name": "myAutomationAccount",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sku": {
+                    "name": "Free"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/runbooks",
+            "apiVersion": "2020-01-13-preview",
+            "name": "[concat('myAutomationAccount/', 'StartContainerApp')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "runbookType": "PowerShell",
+                "logVerbose": false,
+                "logProgress": false,
+                "description": "Runbook to start the container app",
+                "draft": {
+                    "inEdit": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/runbooks",
+            "apiVersion": "2020-01-13-preview",
+            "name": "[concat('myAutomationAccount/', 'StopContainerApp')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "runbookType": "PowerShell",
+                "logVerbose": false,
+                "logProgress": false,
+                "description": "Runbook to stop the container app",
+                "draft": {
+                    "inEdit": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/schedules",
+            "apiVersion": "2015-10-31",
+            "name": "[concat('myAutomationAccount/', 'StartContainerAppSchedule')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "startTime": "2024-08-30T12:30:00Z",
+                "expiryTime": "2025-08-12T08:00:00Z",
+                "interval": "1",
+                "frequency": "Day"
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/schedules",
+            "apiVersion": "2015-10-31",
+            "name": "[concat('myAutomationAccount/', 'StopContainerAppSchedule')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "startTime": "2024-08-31T12:30:00Z",
+                "expiryTime": "2025-08-12T18:00:00Z",
+                "interval": "1",
+                "frequency": "Day"
+            }
+        }
+    ]
+}
