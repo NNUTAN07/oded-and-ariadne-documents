@@ -1,0 +1,37 @@
+Yes, before publishing the runbooks, you'll need to add the necessary PowerShell code that will start and stop your container app.
+
+ 
+
+>> For the StartContainerApp Runbook:
+
++++++++++++++++++++++++++++++++++++
+
+ 
+
+# Variables
+$resourceGroupName = "templateresourcegroup"
+$containerAppName = "mycontainerapp"
+
+ 
+
+# Start the container app
+Start-AzContainerApp -ResourceGroupName $resourceGroupName -Name $containerAppName
+ 
+
+ 
+
+>> For the StopContainerApp Runbook:
+
++++++++++++++++++++++++++++++++++++
+
+ 
+
+# Variables
+$resourceGroupName = "templateresourcegroup"
+$containerAppName = "mycontainerapp"
+
+ 
+
+# Stop the container app
+Stop-AzContainerApp -ResourceGroupName $resourceGroupName -Name $containerAppName
+ 
