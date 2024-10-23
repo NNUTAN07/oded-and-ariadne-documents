@@ -25,7 +25,7 @@ spec:
         value: '8443'
     ports:
       - containerPort: 80
-   imagePullSecrets:
+  imagePullSecrets:
         - name: regcred
 
 ---
