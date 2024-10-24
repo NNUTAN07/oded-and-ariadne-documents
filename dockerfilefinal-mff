@@ -1,15 +1,22 @@
-# Base image with OS 
+# Base image with OS
    FROM ubuntu:22.04
 
 # Install java-17
    RUN apt-get update && \
        apt-get -y install openjdk-17-jdk
   
+
 # Copy the JAR file to the container
    COPY target/LoginService-0.0.1-SNAPSHOT.jar /home/LoginService-0.0.1-SNAPSHOT.jar
-
-# exposing port no to a container
-   EXPOSE 5052
+   COPY mobilefirstfinance.com.crt /home/mobilefirstfinance.com.crt
    
+   
+# run the certificates command
+ RUN keytool -import -trustcacerts -keystore /usr/lib/jvm/java-17-openjdk-amd64/lib/security/cacerts -storepass changeit -alias keycloak -file /home/mobilefirstfinance.com.crt -noprompt
+  
+# exposing port no to a container
+  EXPOSE 5052
+   
+
 # Start the JAR file
   CMD java -jar /home/LoginService-0.0.1-SNAPSHOT.jar
