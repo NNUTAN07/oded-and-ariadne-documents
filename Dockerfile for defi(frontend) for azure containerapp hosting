@@ -1,14 +1,21 @@
 FROM ubuntu:18.04
 
+# Install necessary packages
 RUN apt-get update && \
     apt-get -y install apache2 && \
     apt-get -y install unzip && \
+    apt-get install -y gettext-base && \
     rm -rf /var/www/html/index.html
 
-COPY dist.zip  /root
-RUN  unzip /root/dist.zip -d /root
-RUN  cp -R /root/dist/* /var/www/html
+# Copy application files
+COPY dist.zip /root
+COPY /src/assets/env.template.js /root
 
+# Unzip the application files
+RUN unzip /root/dist.zip -d /root
+RUN cp -R /root/dist/* /var/www/html
+
+# Set file permissions
 RUN chmod 777 /var/www/html/assets/img/flags/es.png && \
     chmod 777 /var/www/html/assets/img/flags/pt.png && \
     chmod 777 /var/www/html/assets/img/flags/de.png && \
@@ -20,8 +27,11 @@ RUN chmod 777 /var/www/html/assets/img/flags/es.png && \
     chmod 777 /var/www/html/assets/img/icons/pdf.png && \
     chmod 777 /var/www/html/assets/img/portrait/small/avatar-s-23.png
 
+# Configure Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+# Expose ports
 EXPOSE 80 443
 
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+# Start Apache and create env.js from env.template.js at runtime
+CMD ["/bin/bash", "-c", "envsubst < /root/env.template.js > /var/www/html/assets/env.js && apache2ctl -D FOREGROUND"]
