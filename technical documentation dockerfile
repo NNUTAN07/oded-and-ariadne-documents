@@ -1,5 +1,5 @@
 # Base image with OS
-FROM ubuntu:22.04 
+FROM ubuntu:24.04 
 
 # Set non-interactive environment to avoid prompts
 ENV DEBIAN_FRONTEND=noninteractive
@@ -14,7 +14,12 @@ COPY /build/site.zip /root/
 
 # Unzip the application file and copy it to Apache's web root
 RUN unzip /root/site.zip -d /root/ && \
-    cp -r /root/var/lib/jenkins/workspace/TechnicalDocumentation/TechnicalDocumentation/build/site/* /var/www/html/
+    cp -r /root/var/lib/jenkins/workspace/TechnicalDocumentation/TechnicalDocumentation/build/site/AnalytX/v1/* /var/www/html/ && \
+    cp -r /root/var/lib/jenkins/workspace/TechnicalDocumentation/TechnicalDocumentation/build/site/_ /var/www/html/ && \
+    cp -r /root/var/lib/jenkins/workspace/TechnicalDocumentation/TechnicalDocumentation/build/site/search-index.js /var/www/html/ && \
+    cp -r /root/var/lib/jenkins/workspace/TechnicalDocumentation/TechnicalDocumentation/build/site/AnalytX /var/www/html/
+    
+    
 
 # Configure Apache with a ServerName to suppress warnings
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
