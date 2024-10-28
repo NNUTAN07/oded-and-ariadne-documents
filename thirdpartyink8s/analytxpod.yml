@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: analytx
+  labels:
+    name: analytx
+spec:
+  containers:
+  - name: analytx
+    image: solitx/analytxlatest:2
+    ports:
+      - containerPort: 8080
+  tolerations:
+   - key: node-role.kubernetes.io/control-plane
+     operator: Exists
+     effect: NoSchedule
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytx-service
+spec:
+  selector:
+    name: analytx  # Matches the label in the pod
+  ports:
+    - protocol: TCP
+      port: 80          # Port exposed by the service (external port)
+      targetPort: 8080   # Pod's container port
+         # The port exposed on each node (can be manually specified or left for Kubernetes to choose)
+  type: LoadBalancer         # Exposes the service on a port on every node
