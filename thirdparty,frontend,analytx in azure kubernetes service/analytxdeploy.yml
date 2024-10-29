@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytxdeployment
+spec:
+  selector:
+    matchLabels:
+      app: analytx
+  template:
+    metadata:
+      labels:
+        app: analytx
+    spec:
+      containers:
+      - name: analytx
+        image: solitx/analytxlatest:2
+        
+        ports:
+        - containerPort: 8080
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytx-service
+spec:
+  selector:
+    app: analytx  # Matches the label in the pod
+  ports:
+    - protocol: TCP
+      port: 80          # Port exposed by the service (external port)
+      targetPort: 8080   # Pod's container port
+         
+  type: LoadBalancer         # Exposes the service on a port on every node
