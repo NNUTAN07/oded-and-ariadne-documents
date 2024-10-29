@@ -2,7 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: analytxdeployment
-spec:
+spec: 
+  replicas: 3
+  strategy
   selector:
     matchLabels:
       app: analytx
