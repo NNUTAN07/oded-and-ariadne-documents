@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: docusignpod
+  labels:
+    name: docusign
+spec:
+  containers:
+  - name: docusign
+    image: odedtech/docusign:1
+    ports:
+      - containerPort: 5001
+  imagePullSecrets:
+     - name: regcred
+  tolerations:
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: docusignservice
+spec:
+  type: NodePort
+  selector:
+    name: docusign
+  ports:
+    - port: 80
+      targetPort: 5001
