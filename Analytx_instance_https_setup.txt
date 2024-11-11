@@ -1,6 +1,6 @@
 Certficate Convertion :
 =====================
-openssl pkey -in analytx.io.key.pem -out analtx.io.key
+openssl pkey -in analytx.io.key.pem -out analytx.io.key
 openssl crl2pkcs7 -nocrl -certfile analytx.io.crt.pem | openssl pkcs7 -print_certs -out analytx.io.crt
 
 Create JKS file :
