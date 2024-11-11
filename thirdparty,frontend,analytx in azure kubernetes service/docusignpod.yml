@@ -22,7 +22,7 @@ kind: Service
 metadata:
   name: docusignservice
 spec:
-  type: NodePort
+  type: Load Balancer
   selector:
     name: docusign
   ports:
