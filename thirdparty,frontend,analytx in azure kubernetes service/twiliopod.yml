@@ -27,5 +27,5 @@ spec:
     - protocol: TCP
       port: 80          # Port exposed by the service (external port)
       targetPort: 5002   # Pod's container port
-      nodePort: 30036    # The port exposed on each node (can be manually specified or left for Kubernetes to choose)
-  type: NodePort         # Exposes the service on a port on every node
+     # nodePort: 30036    # The port exposed on each node (can be manually specified or left for Kubernetes to choose)
+  type: Load Balancer        # Exposes the service on a port on every node
