@@ -4,6 +4,7 @@ metadata:
   name: analytxdeployment
 spec: 
   replicas: 3
+  minReadySeconds: 15
   strategy:
     type: RollingUpdate
     rollingUpdate:
