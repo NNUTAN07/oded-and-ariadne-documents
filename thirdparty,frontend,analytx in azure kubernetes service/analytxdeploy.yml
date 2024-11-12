@@ -20,10 +20,12 @@ spec:
     spec:
       containers:
       - name: analytx
-        image: solitx/analytxlatest:2
+        image: solitx/analytxv2:22
         
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+                - name: regcred
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
