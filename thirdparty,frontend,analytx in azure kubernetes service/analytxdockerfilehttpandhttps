@@ -1,0 +1,22 @@
+# Use an official Tomcat base image
+FROM tomcat:9-jdk17
+
+# Copy the keystore file into the Tomcat container
+COPY analytx.jks /usr/local/tomcat/
+
+# Expose ports for HTTP and HTTPS
+EXPOSE 8080 8443
+
+# Modify server.xml to add HTTPS configuration using sed
+RUN sed -i 's#</Service>#\
+    <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"                                                                                        \
+               maxThreads="150" SSLEnabled="true" scheme="https" secure="true" \
+               clientAuth="false" sslProtocol="TLS" keystoreFile="/usr/local/tom                                                                                       cat/analytx.jks" \
+               keystorePass="aswindia" />\
+    </Service>#' /usr/local/tomcat/conf/server.xml
+
+# Copy the WAR file into the webapps directory
+COPY AriadneHome.war /usr/local/tomcat/webapps/
+
+# Run Tomcat
+CMD ["catalina.sh", "run"]
