@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytxdeployment
+spec: 
+  replicas: 3
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: analytx
+  template:
+    metadata:
+      labels:
+        app: analytx
+    spec:
+      containers:
+      - name: analytx
+        image: solitx/tomcatimagehttps:latest
+        ports:
+          - containerPort: 8080   # HTTP
+          - containerPort: 8443   # HTTPS
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytx-service
+spec:
+  selector:
+    app: analytx  # Matches the label in the pod
+  ports:
+    - name: http      # Name for the HTTP port
+      protocol: TCP
+      port: 80         # External port for HTTP
+      targetPort: 8080 # Maps to container port 8080 (HTTP)
+    - name: https     # Name for the HTTPS port
+      protocol: TCP
+      port: 443        # External port for HTTPS
+      targetPort: 8443 # Maps to container port 8443 (HTTPS)
+  type: LoadBalancer  # Exposes the service to the outside world
