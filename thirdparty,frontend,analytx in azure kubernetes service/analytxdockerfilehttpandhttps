@@ -11,7 +11,7 @@ EXPOSE 8080 8443
 RUN sed -i 's#</Service>#\
     <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"                                                                                        \
                maxThreads="150" SSLEnabled="true" scheme="https" secure="true" \
-               clientAuth="false" sslProtocol="TLS" keystoreFile="/usr/local/tom                                                                                       cat/analytx.jks" \
+               clientAuth="false" sslProtocol="TLS" keystoreFile="/usr/local/tomcat/analytx.jks" \
                keystorePass="aswindia" />\
     </Service>#' /usr/local/tomcat/conf/server.xml
 
