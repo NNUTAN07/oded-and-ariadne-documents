@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contractdeployment
+spec: 
+  replicas: 3
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+       maxUnavailable: 1
+       maxSurge: 1
+  selector:
+    matchLabels:
+      app: contract
+  template:
+    metadata:
+      labels:
+        app: contract
+    spec:
+      containers:
+      - name: contract
+        image: odedtech/defi:120
+        envFrom:
+         - configMapRef:
+            name: contract-configmap
+
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+                - name: regcred
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: contract-service
+spec:
+  selector:
+    app: contract  # Matches the label in the pod
+  ports:
+    - protocol: TCP
+      port: 80          # Port exposed by the service (external port)
+      targetPort: 80   # Pod's container port
+         
+  type: LoadBalancer         # Exposes the service on a port on every node
