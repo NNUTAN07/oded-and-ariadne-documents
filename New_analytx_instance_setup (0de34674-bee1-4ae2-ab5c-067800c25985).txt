@@ -68,3 +68,9 @@ to install mysql8 version:
   683  sudo apt-get update
   684  sudo apt install mysql-server mysql-client
 
+Backup and restore:
+mysql Backup and Restore commands :
+Backup : mysqldump --column-statistics=0 --host hostAddress -P 3306 -u root -p dbname -r filename.sql
+    (or) mysqldump --column-statistics=0 --host 95.217.197.170 -P 3306 -u root -p AriadneDB --result-file=AriadneDB.sql
+Restore : mysql -u root -p -h hostAddress -D dbName < filename.sql
+
