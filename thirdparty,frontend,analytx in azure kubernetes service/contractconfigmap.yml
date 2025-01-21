@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: contract-configmap
+data:
+  BASE_API_URL: "sandbox.mobilefirstfinance.com"
+  KEYCLOAK_BASE_API_URL: "keycloak.mobilefirstfinance.com"
+  KEYCLOAK_CLIENT_ID: "mff"
+  KEYCLOAK_CLIENT_SECRET: "eKmGhZhSQuiolxfvTHyw7J2SsKSbUgoN"
+  KEYCLOAK_PORT: "8443"
+  KEYCLOAK_REALM: "Sandbox"
+  ROOT_USER: "TEST"
+  SERVER_URL: "test.contractstudio.app"
