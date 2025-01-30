@@ -1,0 +1,78 @@
+pipeline {
+    tools {
+        jdk 'java17'   // Specifies the JDK installation name defined in Jenkins
+        maven 'maven3.9' // Specifies the Maven installation name defined in Jenkins
+    }
+    agent any   // Runs the pipeline on any available agent
+
+    stages {
+        stage('check branch') {
+            when {
+               branch 'master'
+             }
+          steps {
+           echo 'Building on master branch...'
+           }
+        }
+              
+        stage('Clone Repo') {
+            steps {
+                // Clones the repository from Bitbucket using the specified credentials ID
+                git url: 'https://bitbucket.org/mobilefirstfinance/mff-webapp.git', credentialsId: 'c49c0105-2aee-4ced-8850-438cfd61bf38'
+            }
+        }
+
+        stage('Build the Code') {
+            steps {
+                // Runs the Angular build command for production configuration
+                sh '''
+                    export NVM_DIR=/var/lib/jenkins/.nvm
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  // Source NVM
+                    #node -v  // Verify Node.js version
+                    #npm install -g npm@10.8.2
+                    #npm install -g @angular/cli@14 --force
+                    npm install --force
+                    ng build --configuration=production  
+                    zip -r dist.zip dist
+                '''
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                // Retrieves Docker Hub credentials and builds/pushes the Docker image
+                withCredentials([string(credentialsId: 'ODEDTECH-DOCKERHUBPASWORD', variable: 'DOCKER_PASSWORD')]) {
+                    sh '''
+                        sudo docker build -f Dockerfile -t odedtech/testcontractstudio:$BUILD_NUMBER . 
+                        echo $DOCKER_PASSWORD | sudo docker login -u odedtech --password-stdin
+                        sudo docker push odedtech/testcontractstudio:$BUILD_NUMBER
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to Azure Kubernetes Service') {
+            steps {
+                 withCredentials([
+                            string(credentialsId: 'Azureapp-clientID', variable: 'AZURE_APP_ID'),
+                            string(credentialsId: 'clientsecret', variable: 'clientsecret'),
+                            string(credentialsId: 'tenantID', variable: 'tenantID')
+                            ]){
+                sh '''
+                    # Azure login with direct values
+                    az login --service-principal -u $AZURE_APP_ID -p $clientsecret --tenant $tenantID
+                    
+                    # Get AKS credentials
+                    az aks get-credentials --resource-group kubernetes-resourcegroup --name testcontractstudio --file /var/lib/jenkins/.kube/config
+
+                    # Set the image for the Kubernetes deployment
+                    kubectl set image deployment contractdeployment contract=odedtech/testcontractstudio:$BUILD_NUMBER --record
+                    kubectl rollout status deployment contractdeployment
+                    kubectl rollout history deployment contractdeployment
+                    kubectl get deploy -o wide
+                '''
+                }
+            }
+        }
+    }
+}
