@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ariadnehome-deployment
+spec:
+  replicas: 1
+  minReadySeconds: 45
+  strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 1
+        maxSurge: 1
+  selector:
+    matchLabels:
+      app: ariadnehome
+  template:
+    metadata:
+      labels:
+        app: ariadnehome
+    spec:
+      containers:
+      - name: ariadnehome-container
+        image: solitx/ariadnehome:1
+        resources:
+          requests:
+             memory: "200Mi"
+             cpu: "200m"
+          limits:
+            memory: "300Mi"
+            cpu: "300m"
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+                  name: regcredsolitx
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+    name: ariadnehome-service
+spec:
+  type: ClusterIP
+  selector:
+       app: ariadnehome
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
