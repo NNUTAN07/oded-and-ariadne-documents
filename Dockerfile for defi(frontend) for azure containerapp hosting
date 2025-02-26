@@ -9,11 +9,14 @@ RUN apt-get update && \
 
 # Copy application files
 COPY dist.zip /root
-COPY /src/assets/env.template.js /root
+COPY env.template.js /root
 
 # Unzip the application files
 RUN unzip /root/dist.zip -d /root
 RUN cp -R /root/dist/* /var/www/html
+
+# Copy the .htaccess file from the build directory to Apache's document root
+RUN cp /root/dist/.htaccess /var/www/html
 
 # Set file permissions
 RUN chmod 777 /var/www/html/assets/img/flags/es.png && \
@@ -29,6 +32,16 @@ RUN chmod 777 /var/www/html/assets/img/flags/es.png && \
 
 # Configure Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Ensure Apache allows overrides for .htaccess
+RUN echo '\n<Directory /var/www/html/>\n\
+    Options Indexes FollowSymLinks\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>\n' >> /etc/apache2/apache2.conf
+
+# Enable mod_rewrite for apache2
+RUN a2enmod rewrite
 
 # Expose ports
 EXPOSE 80 443
