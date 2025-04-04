@@ -2,7 +2,7 @@ az aks create \
     --resource-group sandboxanalytx \
     --name sandboxanalytxcli \
     --node-count 1 \
-    --node-vm-size Standard_D2pds_v6 \
+    --node-vm-size Standard_D2ads_v5 \
     --node-osdisk-size 30 \
     --zones 1 
 
