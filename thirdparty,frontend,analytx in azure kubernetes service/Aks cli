@@ -1,10 +1,10 @@
 az aks create \
-    --resource-group myResourceGroup \
-    --name myAKSCluster \
-    --node-count 3 \
-    --node-vm-size Standard_DS2_v2 \
+    --resource-group sandboxanalytx \
+    --name sandboxanalytxcli \
+    --node-count 1 \
+    --node-vm-size Standard_D2pds_v6 \
     --node-osdisk-size 30 \
-    --zones 1 2
+    --zones 1 
 
 https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest
 https://learn.microsoft.com/en-us/azure/aks/quotas-skus-regions
