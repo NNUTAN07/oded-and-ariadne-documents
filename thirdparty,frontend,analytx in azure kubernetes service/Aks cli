@@ -1,10 +1,13 @@
 az aks create \
-    --resource-group sandboxanalytx \
-    --name sandboxanalytxcli \
-    --node-count 1 \
-    --node-vm-size Standard_D2ads_v5 \
-    --node-osdisk-size 30 \
-    --zones 1 
+  --resource-group sandboxanalytx \
+  --name sandboxanalytxcli \
+  --node-count 1 \
+  --node-vm-size Standard_D2ads_v5 \
+  --node-osdisk-size 30 \
+  --zones 1 \
+  --network-plugin azure \
+  --network-policy calico
+  --generate-ssh-keys
 
 https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest
 https://learn.microsoft.com/en-us/azure/aks/quotas-skus-regions
