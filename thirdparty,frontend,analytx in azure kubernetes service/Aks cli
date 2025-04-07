@@ -7,7 +7,7 @@ az aks create \
   --max-pods 250 \
   --zones 1 \
   --network-plugin azure \
-  --network-policy calico
+  --network-policy calico \
   --generate-ssh-keys
 
 https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest
