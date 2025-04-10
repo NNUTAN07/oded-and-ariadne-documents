@@ -10,5 +10,18 @@ az aks create \
   --network-policy calico \
   --generate-ssh-keys
 
+
+az aks create \
+  --resource-group kubernetes-resourcegroup \
+  --name contractstudiotestcli \
+  --node-count 1 \
+  --node-vm-size Standard_B2als_v2 \
+  --node-osdisk-size 30 \
+  --max-pods 250 \
+  --zones 1 \
+  --network-plugin azure \
+  --network-policy calico \
+  --generate-ssh-keys
+
 https://learn.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest
 https://learn.microsoft.com/en-us/azure/aks/quotas-skus-regions
